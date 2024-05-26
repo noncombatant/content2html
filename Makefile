@@ -6,3 +6,4 @@ default:
 
 clean:
 	-rm -f content2html
+	go clean
