@@ -132,3 +132,23 @@ func GenerateHTMLFile(t *template.Template, contentPathname, outputDirname strin
 	}
 	return htmlFile.Close()
 }
+
+// GenerateHTML executes template t with the document contentPathname, writing
+// the minified result to w. (See [GenerateDocument] and [Minify].)
+func GenerateHTML(t *template.Template, contentPathname string, w io.Writer) error {
+	content, e := os.ReadFile(contentPathname)
+	if e != nil {
+		return e
+	}
+
+	htmlBytes := bytes.NewBuffer(make([]byte, 0, len(content)))
+	if e := GenerateDocument(t, content, htmlBytes); e != nil {
+		return e
+	}
+
+	minified := bytes.NewBuffer(make([]byte, 0, htmlBytes.Len()))
+	Minify(minified, htmlBytes)
+
+	_, e = io.Copy(w, minified)
+	return e
+}
