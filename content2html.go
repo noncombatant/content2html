@@ -76,7 +76,7 @@ func GetHTMLPathname(pathname, outputDirname string) (string, error) {
 // GenerateDocument executes template t with the document content, writing to w.
 // It completes [Document.Title] by scanning content for the 1st <h1> tag.
 func GenerateDocument(t *template.Template, content []byte, w io.Writer) error {
-	content = useHairSpaces(content)
+	//content = useHairSpaces(content)
 	document := Document{Body: template.HTML(content)}
 	parsed, e := htmlquery.Parse(strings.NewReader(string(content)))
 	if e != nil {
